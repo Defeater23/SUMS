@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Design tokens.
+   A single light theme with an optional dark theme driven by the `dark` class
+   on <html>. Reusable component classes live in `@layer components` below so
+   the look stays consistent across the app.
+--------------------------------------------------------------------------- */
+@layer base {
+  :root {
+    --surface: 255 255 255;
+    --surface-muted: 248 250 252;
+    --surface-raised: 255 255 255;
+    --content: 15 23 42;
+    --content-muted: 71 85 105;
+    --content-subtle: 100 116 139;
+    --line: 226 232 240;
+  }
+
+  .dark {
+    --surface: 15 20 34;
+    --surface-muted: 11 15 26;
+    --surface-raised: 22 28 45;
+    --content: 241 245 249;
+    --content-muted: 203 213 225;
+    --content-subtle: 148 163 184;
+    --line: 51 65 92;
+  }
+
+  * {
+    border-color: rgb(var(--line));
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-surface-muted text-content antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  /* Consistent, visible focus states for keyboard users. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-surface;
+  }
+
+  ::selection {
+    @apply bg-brand-500/20;
+  }
+
+  /* Respect users who prefer less motion. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border border-line bg-surface shadow-card;
+  }
+
+  .card-pad {
+    @apply p-5 sm:p-6;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-medium text-content;
+  }
+
+  .field-hint {
+    @apply mt-1.5 text-xs text-content-subtle;
+  }
+
+  .field-error {
+    @apply mt-1.5 text-xs font-medium text-red-600 dark:text-red-400;
+  }
+
+  .input-base {
+    @apply w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-content
+      placeholder:text-content-subtle transition
+      focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30
+      disabled:cursor-not-allowed disabled:bg-surface-muted disabled:text-content-subtle;
+  }
+
+  .table-base {
+    @apply w-full border-collapse text-left text-sm;
+  }
+
+  .table-base thead th {
+    @apply border-b border-line bg-surface-muted px-4 py-3 text-xs font-semibold uppercase
+      tracking-wide text-content-subtle;
+  }
+
+  .table-base tbody td {
+    @apply border-b border-line px-4 py-3 align-middle text-content;
+  }
+
+  .table-base tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  .table-base tbody tr:hover {
+    @apply bg-surface-muted/70;
+  }
+
+  .skeleton {
+    @apply animate-pulse rounded-md bg-line/60;
+  }
+
+  .link {
+    @apply font-medium text-brand-600 underline-offset-2 hover:underline dark:text-brand-400;
+  }
+
+  /* Scrollbar refinement for panels that scroll internally. */
+  .scroll-thin {
+    scrollbar-width: thin;
+  }
+}
+
+@layer utilities {
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
